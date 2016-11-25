@@ -24,6 +24,6 @@ public interface RequestService {
 //    Call<ResponseBody> stop(@Body AlexaMessage message);
 //
 //    @Headers("Content-Type: application/json")
-    @POST(Urls.post)
+    @POST(Urls.recipes)
     Call<ResponseBody> post(@Body Message message);
 }

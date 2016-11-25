@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.boco.miboy.other.Storage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -68,8 +68,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG, "onCreate: user name " + user.getDisplayName());
             Log.i(TAG, "onCreate: user email " + user.getEmail());
             Log.i(TAG, "onCreate: user photo " + user.getPhotoUrl());
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            authSuccessful();
         } else {
             Log.e(TAG, "onCreate: not authorized");
             LoginManager.getInstance().logOut(); //Facebook
@@ -135,14 +134,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w(TAG, "facebookLoginProcessing: signInWithCredential", task.getException());
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(LoginActivity.this, "User has account from different social by this email", Toast.LENGTH_SHORT).show();
-                                startMainActivity();
+                                authSuccessful();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.d(TAG, "signInWithCredential: onComplete:" + task.isSuccessful());
-                            startMainActivity();
+                            authSuccessful();
                         }
                     }
                 });
@@ -189,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         } else {
-                            startMainActivity();
+                            authSuccessful();
                         }
                     }
                 });
@@ -220,8 +219,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void startMainActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+    private void authSuccessful() {
+        Intent intent;
+        if (Storage.getInstance(this).isQueryRequired()) {
+            intent = new Intent(this, QueryActivity.class);
+        } else {
+            intent = new Intent(this, MainActivity.class);
+        }
         startActivity(intent);
         finish();
     }

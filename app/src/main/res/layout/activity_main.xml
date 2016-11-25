@@ -8,13 +8,11 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.CoordinatorLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:background="@color/primary_light"
         android:layout_height="match_parent"
-        tools:context="com.boco.hh.activity.MainActivity">
+        android:background="@color/primary_light">
 
         <include layout="@layout/toolbar" />
 
@@ -26,10 +24,10 @@
 
             <Button
                 android:id="@+id/post"
-                android:text="post image"
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="post image" />
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 
@@ -38,9 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemIconTint="@drawable/drawer_list_selector"
-        app:itemTextColor="@drawable/drawer_list_selector"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@drawable/drawer_list_selector"
+        app:itemTextColor="@drawable/drawer_list_selector"
         app:menu="@menu/activity_main_drawer" />
 </android.support.v4.widget.DrawerLayout>
