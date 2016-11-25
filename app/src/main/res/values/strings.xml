@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">MIboy</string>
+    <string name="app_name">MIBOY</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="facebook_app_id">686162948212497</string>
+    <string name="fb_login_protocol_scheme">fb686162948212497</string>
+    <string name="text_google" translatable="false">Google</string>
+    <string name="text_facebook" translatable="false">Facebook</string>
+    <string name="toolbar_sign_in">Sign in</string>
+    <string name="text_server_connection_error">Server connection error</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="toolbar_horse_new">New Horse</string>
+    <string name="toolbar_horse_detail">Details</string>
+    <string name="button_done">Done</string>
+    <string name="button_take_photo">Take a photo</string>
+    <string name="button_choose_file">Choose a file</string>
+    <string name="text_error_creating_file">Can\'t create image file!</string>
+    <string name="text_error_uploading_img">Error occurred while uploading photo</string>
+    <string name="title_uploading_data">Uploading data…</string>
+    <string name="title_connecting">Connecting…</string>
 </resources>

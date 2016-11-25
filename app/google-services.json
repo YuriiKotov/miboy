@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "291216253913",
+    "firebase_url": "https://miboy-28a6f.firebaseio.com",
+    "project_id": "miboy-28a6f",
+    "storage_bucket": "miboy-28a6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291216253913:android:b0e04c7ec8f09145",
+        "android_client_info": {
+          "package_name": "com.boco.miboy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291216253913-bdu90lf04j5lildrv3q0cg3sbjpdc7ne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.boco.miboy",
+            "certificate_hash": "E991EB3E5F97254EE460A582E850013C82A49523"
+          }
+        },
+        {
+          "client_id": "291216253913-62lrmmbm71k48869u17be42jrtvlmt28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHZR9jZMb2TH36lACNxmXjIvTT2XquNfA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291216253913-62lrmmbm71k48869u17be42jrtvlmt28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
