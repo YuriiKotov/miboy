@@ -12,6 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:background="@color/primary_light"
         android:layout_height="match_parent"
         tools:context="com.boco.hh.activity.MainActivity">
 
@@ -37,6 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemIconTint="@drawable/drawer_list_selector"
+        app:itemTextColor="@drawable/drawer_list_selector"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
