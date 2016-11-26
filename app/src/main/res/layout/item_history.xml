@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:padding="10dp"
+        android:padding="5dp"
         android:id="@+id/parent"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -16,14 +16,14 @@
 
         <ImageView
             android:id="@+id/photo"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop" />
 
         <TextView
             android:layout_marginLeft="20dp"
             android:id="@+id/time"
-            android:textColor="@color/white"
+            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

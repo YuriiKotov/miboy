@@ -39,7 +39,8 @@ public class HistoryFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         List<History> histories = getMainActivity().realm.where(History.class).findAllSorted("timestamp", Sort.DESCENDING);
-        HistoryAdapter historyAdapter = new HistoryAdapter(getContext(), histories);
+        HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), histories);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(historyAdapter);
     }
 }

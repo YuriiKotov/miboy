@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:padding="10dp"
+        android:padding="5dp"
         android:id="@+id/parent"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         <TextView
             android:layout_marginLeft="20dp"
             android:id="@+id/title"
-            android:textColor="@color/white"
+            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

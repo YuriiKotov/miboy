@@ -8,7 +8,7 @@ public class TextUtil {
     private static final String TAG = TextUtil.class.getSimpleName();
 
     public static String getTime(long value) {
-        DateFormat temp = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
+        DateFormat temp = new SimpleDateFormat("HH:mm dd.MM.yy", Locale.getDefault());
         return temp.format(value);
     }
 }
