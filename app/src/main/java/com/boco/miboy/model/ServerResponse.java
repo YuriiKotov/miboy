@@ -1,4 +1,4 @@
-package com.boco.miboy.backend;
+package com.boco.miboy.model;
 
 import com.google.gson.annotations.SerializedName;
 

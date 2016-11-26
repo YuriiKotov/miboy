@@ -1,15 +1,11 @@
 package com.boco.miboy.backend;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.boco.miboy.activity.MainActivity;
-import com.boco.miboy.activity.QueryActivity;
-import com.boco.miboy.other.Storage;
+import com.boco.miboy.enums.QueryEvent;
+import com.boco.miboy.model.Questionnaire;
+import com.boco.miboy.model.Registration;
+import com.boco.miboy.enums.AuthEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,12 +31,35 @@ public class ApiCall {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.e(TAG, "onResponse: onPost: ");
-                EventBus.getDefault().post(false);
+                EventBus.getDefault().post(AuthEvent.SUCCESS);
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                EventBus.getDefault().post(false);
+                EventBus.getDefault().post(AuthEvent.FAILURE);
+                Log.e(TAG, "onFailure: onPost: " + t.getMessage());
+            }
+        });
+    }
+
+    public void questionnaire(Questionnaire questionnaire) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Urls.baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RequestService service = retrofit.create(RequestService.class);
+
+        Call<ResponseBody> call = service.questionnaire(questionnaire);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.e(TAG, "onResponse: onPost: ");
+                EventBus.getDefault().post(QueryEvent.SUCCESS);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                EventBus.getDefault().post(QueryEvent.FAILURE);
                 Log.e(TAG, "onFailure: onPost: " + t.getMessage());
             }
         });

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.boco.miboy.backend.ApiCall;
+import com.boco.miboy.enums.AuthEvent;
 import com.boco.miboy.other.Storage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -65,10 +66,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(Boolean registrationSuccess) {
+    public void onMessageEvent(AuthEvent authEvent) {
         progressDialog.dismiss();
-        Log.i(TAG, "onMessageEvent: ");
-        if (registrationSuccess) {
+        Log.i(TAG, "onMessageEvent: " + authEvent);
+        if (authEvent == AuthEvent.SUCCESS) {
             Intent intent;
             if (Storage.getInstance(this).isQueryRequired()) {
                 intent = new Intent(this, QueryActivity.class);
@@ -77,8 +78,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
             startActivity(intent);
             finish();
-        } else {
-            progressDialog.dismiss();
         }
     }
 

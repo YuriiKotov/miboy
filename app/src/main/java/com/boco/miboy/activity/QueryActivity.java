@@ -1,5 +1,6 @@
 package com.boco.miboy.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,10 +12,19 @@ import android.util.Log;
 import android.view.View;
 
 import com.boco.miboy.R;
+import com.boco.miboy.backend.ApiCall;
+import com.boco.miboy.enums.AuthEvent;
+import com.boco.miboy.enums.QueryEvent;
+import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.fragment.QueryFragment;
 import com.boco.miboy.model.Question;
 import com.boco.miboy.other.AssetUtil;
 import com.boco.miboy.other.Storage;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +41,38 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
     private Map<Integer, Integer> answers;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private ProgressDialog progressDialog;
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(QueryEvent queryEvent) {
+        progressDialog.dismiss();
+        Log.i(TAG, "onMessageEvent: " + queryEvent);
+        if (queryEvent == QueryEvent.SUCCESS) {
+            Storage.getInstance(this).setQueryRequired(false);
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         toolbar.setTitle(R.string.toolbar_query);
         setSupportActionBar(toolbar);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Wait please...");
+        progressDialog.setCancelable(false);
 
         answers = new TreeMap<>();
         List<Question> questions = getImagesForQuery();
@@ -71,11 +104,10 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss();
         } else {
-            //TODO: send answer to backend
+            progressDialog.show();
             Log.i(TAG, "showQuestion: Query done");
-            Storage.getInstance(this).setQueryRequired(false);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            new ApiCall().questionnaire(new Questionnaire(userUid, answers));
         }
     }
 
