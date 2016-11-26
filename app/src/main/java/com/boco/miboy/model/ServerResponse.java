@@ -30,7 +30,7 @@ public class ServerResponse {
 
     @Override
     public String toString() {
-        return "ServerResponse{" +
+        return "{" +
                 "data='" + data + '\'' +
                 ", errorCode='" + errorCode + '\'' +
                 '}';

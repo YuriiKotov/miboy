@@ -69,13 +69,13 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "time=" + time +
-                ", title='" + title + '\'' +
-                ", instruction='" + instruction + '\'' +
-                ", image='" + image + '\'' +
-                ", ingredients=" + ingredients +
-                ", buy=" + buy +
+        return "{" +
+                "\"time\"=" + time +
+                ", \"title\"='" + title + '\'' +
+                ", \"instruction\"='" + instruction + '\'' +
+                ", \"image\"='" + image + '\'' +
+                ", \"ingredients\"=" + ingredients +
+                ", \"buy\"=" + buy +
                 '}';
     }
 }

@@ -29,7 +29,7 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PhotoFragment extends Fragment {
+public class PhotoFragment extends BaseFragment {
     private static final String TAG = PhotoFragment.class.getSimpleName();
 
     @OnClick(R.id.photo_bt)
@@ -37,10 +37,6 @@ public class PhotoFragment extends Fragment {
         if (getMainActivity().hasCameraPermissions()) {
             makePhoto();
         }
-    }
-
-    public MainActivity getMainActivity() {
-        return (MainActivity) getActivity();
     }
 
     @Nullable

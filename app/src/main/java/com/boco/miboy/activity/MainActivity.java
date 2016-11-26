@@ -22,8 +22,10 @@ import com.boco.miboy.enums.RecipeEvent;
 import com.boco.miboy.enums.Screen;
 import com.boco.miboy.fragment.HistoryFragment;
 import com.boco.miboy.fragment.PhotoFragment;
+import com.boco.miboy.model.History;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
+import com.boco.miboy.other.Const;
 import com.boco.miboy.other.Storage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +35,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.Sort;
 
 public class MainActivity extends PermissionActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -51,21 +57,27 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
     public String imagePath;
     private Fragment currentFragment;
     public ProgressDialog progressDialog;
+    public Realm realm;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RecipeEvent recipeEvent) {
         progressDialog.dismiss();
         Log.i(TAG, "onMessageEvent: " + recipeEvent);
         if (recipeEvent == RecipeEvent.SUCCESS) {
-            Intent intent = new Intent(this, RecipeActivity.class);
-            startActivity(intent);
-            finish();
+            List<History> historyList = realm.where(History.class).findAllSorted("timestamp", Sort.DESCENDING);
+            if (!historyList.isEmpty()) {
+                Intent intent = new Intent(this, RecipeActivity.class);
+                intent.putExtra(Const.HISTORY_ID_EXTRA, historyList.get(0).getTimestamp());
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        realm.close();
         super.onDestroy();
     }
 
@@ -75,6 +87,7 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        realm = Realm.getDefaultInstance();
 
         setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -125,7 +138,11 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.nav_photo:
+                showFragment(Screen.PHOTO);
+                break;
             case R.id.nav_history:
+                showFragment(Screen.HISTORY);
                 break;
             case R.id.nav_query:
                 startActivity(new Intent(this, QueryActivity.class));

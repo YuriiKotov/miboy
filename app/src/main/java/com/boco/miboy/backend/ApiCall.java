@@ -6,17 +6,22 @@ import android.util.Log;
 
 import com.boco.miboy.enums.QueryEvent;
 import com.boco.miboy.enums.RecipeEvent;
+import com.boco.miboy.model.History;
 import com.boco.miboy.model.PhotoRequest;
 import com.boco.miboy.model.Questionnaire;
+import com.boco.miboy.model.Recipe;
 import com.boco.miboy.model.Registration;
 import com.boco.miboy.enums.AuthEvent;
 import com.boco.miboy.model.ServerResponse;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -57,7 +62,7 @@ public class ApiCall {
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                Log.e(TAG, "onResponse: onPost: " + response.message());
+                Log.e(TAG, "onResponse: onPost: " + response.body().toString());
                 EventBus.getDefault().post(QueryEvent.SUCCESS);
             }
 
@@ -76,7 +81,8 @@ public class ApiCall {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
+        final byte[] b = baos.toByteArray();
+        Log.i(TAG, "photo: byte length = " + b.length);
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
         PhotoRequest message = new PhotoRequest(userUid, encodedImage);
@@ -84,7 +90,18 @@ public class ApiCall {
         call.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                Log.e(TAG, "onResponse: onPost: " + response.message());
+                final ServerResponse serverResponse = response.body();
+                Log.e(TAG, "onResponse: onPost: " + serverResponse.toString());
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Gson gson = new Gson();
+                        String json = gson.toJson(serverResponse);
+                        History history = new History(System.currentTimeMillis(), b, json);
+                        realm.insertOrUpdate(history);
+                    }
+                });
                 EventBus.getDefault().post(RecipeEvent.SUCCESS);
             }
 

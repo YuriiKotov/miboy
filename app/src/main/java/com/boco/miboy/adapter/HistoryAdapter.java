@@ -1,6 +1,8 @@
 package com.boco.miboy.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,53 +11,48 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boco.miboy.R;
-import com.boco.miboy.backend.Urls;
-import com.boco.miboy.model.Recipe;
-import com.boco.miboy.other.CircleTransform;
-import com.squareup.picasso.Picasso;
+import com.boco.miboy.model.History;
+import com.boco.miboy.other.TextUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private final Context context;
-    private List<Recipe> recipes;
+    private List<History> histories;
 
-    public RecipeAdapter(Context context, List<Recipe> recipes) {
+    public HistoryAdapter(Context context, List<History> histories) {
         this.context = context;
-        this.recipes = recipes;
+        this.histories = histories;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Recipe recipe = recipes.get(position);
+        History history = histories.get(position);
 
-        holder.title.setText(recipe.getTitle());
-        Picasso.with(context)
-                .load(Urls.imageUrl + recipe.getImage())
-                .transform(new CircleTransform())
-                .into(holder.photo);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(history.getPhoto(), 0, history.getPhoto().length);
+
+        holder.photo.setImageBitmap(bitmap);
+        holder.time.setText(TextUtil.getTime(history.getTimestamp()));
     }
 
     @Override
     public int getItemCount() {
-        return recipes.size();
+        return histories.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title)
-        TextView title;
+        TextView time;
         @BindView(R.id.photo)
         ImageView photo;
-        @BindView(R.id.match_view)
-        TextView match;
 
 
         ViewHolder(View itemView) {
