@@ -1,18 +1,14 @@
 package com.boco.miboy.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,7 +22,6 @@ import com.boco.miboy.fragment.HistoryFragment;
 import com.boco.miboy.fragment.PhotoFragment;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
-import com.boco.miboy.other.Const;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -47,6 +42,7 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
     RelativeLayout container;
     private Screen currentScreen;
     public String imagePath;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,29 +61,12 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         initDrawer();
         showFragment(Screen.PHOTO);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            Log.i(TAG, "onActivityResult: " + requestCode);
-            switch (requestCode) {
-                case Const.CAMERA_RC:
-                    break;
-                case Const.RESULT_LOAD_IMAGE:
-
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    if (cursor != null) {
-                        cursor.moveToFirst();
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        imagePath = cursor.getString(columnIndex);
-                        cursor.close();
-                    }
-                    break;
-                default:
-                    break;
-            }
+        if (resultCode == RESULT_OK && currentFragment != null) {
+            currentFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -96,25 +75,24 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         if (currentScreen != screen) {
             currentScreen = screen;
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment fragment = new PhotoFragment();
+            currentFragment = new PhotoFragment();
             switch (screen) {
                 case PHOTO:
-                    fragment = new PhotoFragment();
+                    currentFragment = new PhotoFragment();
                     toolbar.setTitle(R.string.app_name);
                     break;
                 case HISTORY:
-                    fragment = new HistoryFragment();
+                    currentFragment = new HistoryFragment();
                     toolbar.setTitle("History");
                     break;
             }
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss();
+            fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commitAllowingStateLoss();
         }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_history:

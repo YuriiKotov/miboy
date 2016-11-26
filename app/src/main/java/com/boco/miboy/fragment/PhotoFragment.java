@@ -1,6 +1,7 @@
 package com.boco.miboy.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,18 +12,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.boco.miboy.R;
 import com.boco.miboy.activity.MainActivity;
+import com.boco.miboy.backend.ApiCall;
 import com.boco.miboy.other.Const;
 import com.boco.miboy.other.ImageUtil;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 public class PhotoFragment extends Fragment {
     private static final String TAG = PhotoFragment.class.getSimpleName();
@@ -54,7 +60,26 @@ public class PhotoFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: ");
+        if (resultCode == RESULT_OK) {
+            updatePhoto();
+        } else {
+            showToast(R.string.text_error_uploading_img);
+        }
+    }
 
+    private void updatePhoto() {
+        Log.i(TAG, "updatePhoto: ");
+        String imagePath = getMainActivity().imagePath;
+        if (imagePath != null && !imagePath.isEmpty()) {
+            String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            Bitmap bitmap = ImageUtil.decodeSampledBitmap(imagePath, 750, 750);
+
+            new ApiCall().photo(userUid, bitmap);
+        } else {
+            showToast(R.string.text_error_uploading_img);
+        }
     }
 
     private void makePhoto() {
