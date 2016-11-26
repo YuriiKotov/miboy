@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/question"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/primary_text"
+        android:textSize="32sp" />
 
-        <TextView
-            android:layout_margin="20dp"
-            android:textColor="@color/primary_text"
-            android:id="@+id/question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="32sp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <Button
-        style="@style/MiboyButton"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="40dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/next_btn"
-        android:text="Next"
+    <TextView
+        android:id="@+id/result_tv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        android:text="1/7"
+        android:textColor="@color/secondary_text"
+        android:textSize="28sp" />
+</LinearLayout>

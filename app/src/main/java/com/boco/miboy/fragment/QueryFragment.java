@@ -23,12 +23,11 @@ public class QueryFragment extends Fragment {
     private static final String TAG = QueryFragment.class.getSimpleName();
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
-    @BindView(R.id.next_btn)
-    Button nextBtn;
+    @BindView(R.id.result_tv)
+    TextView resultView;
     @BindView(R.id.question)
     TextView questionView;
     private Question question;
-    private QueryAdapter queryAdapter;
 
     public static QueryFragment newInstance(Question question) {
         QueryFragment queryFragment = new QueryFragment();
@@ -48,13 +47,13 @@ public class QueryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         Log.i(TAG, "onActivityCreated: ");
-        nextBtn.setOnClickListener((View.OnClickListener) getActivity());
-        nextBtn.setEnabled(false);
+        String resultText = question.getNumber() + " / 7";
+
+        resultView.setText(resultText);
         questionView.setText(question.getQuestion());
 
-        queryAdapter = new QueryAdapter(getContext(), question.getImages(), nextBtn);
+        QueryAdapter queryAdapter = new QueryAdapter(getActivity(), question.getImages());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(queryAdapter);
     }
