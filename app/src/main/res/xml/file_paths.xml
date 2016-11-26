@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <external-path name="my_images" path="Android/data/com.boco.hh/files/Pictures" />
+    <external-path name="my_images" path="Android/data/com.boco.miboy/files/Pictures" />
 </resources>

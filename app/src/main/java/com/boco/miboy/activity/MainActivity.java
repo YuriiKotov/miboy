@@ -1,8 +1,10 @@
 package com.boco.miboy.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -24,6 +26,7 @@ import com.boco.miboy.fragment.HistoryFragment;
 import com.boco.miboy.fragment.PhotoFragment;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
+import com.boco.miboy.other.Const;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -31,7 +34,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends PermissionActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.container)
     RelativeLayout container;
     private Screen currentScreen;
+    public String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         initDrawer();
         showFragment(Screen.PHOTO);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Log.i(TAG, "onActivityResult: " + requestCode);
+            switch (requestCode) {
+                case Const.CAMERA_RC:
+                    break;
+                case Const.RESULT_LOAD_IMAGE:
+
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    if (cursor != null) {
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imagePath = cursor.getString(columnIndex);
+                        cursor.close();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void showFragment(Screen screen) {
@@ -104,10 +133,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawers();
         return true;
-    }
-
-    private void showSnackBar(String text) {
-        Snackbar.make(container, text, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initDrawer() {
