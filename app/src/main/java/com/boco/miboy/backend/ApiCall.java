@@ -5,14 +5,17 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.boco.miboy.enums.QueryEvent;
+import com.boco.miboy.enums.RecipeEvent;
 import com.boco.miboy.model.PhotoRequest;
 import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.model.Registration;
 import com.boco.miboy.enums.AuthEvent;
+import com.boco.miboy.model.ServerResponse;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -30,16 +33,16 @@ public class ApiCall {
         Retrofit retrofit = getDefaultInstance();
         RequestService service = retrofit.create(RequestService.class);
 
-        Call<ResponseBody> call = service.registration(new Registration(userUid));
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ServerResponse> call = service.registration(new Registration(userUid));
+        call.enqueue(new Callback<ServerResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e(TAG, "onResponse: onPost: ");
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                Log.e(TAG, "onResponse: onPost: " + response.body().toString());
                 EventBus.getDefault().post(AuthEvent.SUCCESS);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
                 EventBus.getDefault().post(AuthEvent.FAILURE);
                 Log.e(TAG, "onFailure: onPost: " + t.getMessage());
             }
@@ -50,16 +53,16 @@ public class ApiCall {
         Retrofit retrofit = getDefaultInstance();
         RequestService service = retrofit.create(RequestService.class);
 
-        Call<ResponseBody> call = service.questionnaire(questionnaire);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ServerResponse> call = service.questionnaire(questionnaire);
+        call.enqueue(new Callback<ServerResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e(TAG, "onResponse: onPost: ");
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                Log.e(TAG, "onResponse: onPost: " + response.message());
                 EventBus.getDefault().post(QueryEvent.SUCCESS);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
                 EventBus.getDefault().post(QueryEvent.FAILURE);
                 Log.e(TAG, "onFailure: onPost: " + t.getMessage());
             }
@@ -77,27 +80,34 @@ public class ApiCall {
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
         PhotoRequest message = new PhotoRequest(userUid, encodedImage);
-        Call<ResponseBody> call = service.post(message);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ServerResponse> call = service.post(message);
+        call.enqueue(new Callback<ServerResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e(TAG, "onResponse: onPost: ");
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                Log.e(TAG, "onResponse: onPost: " + response.message());
+                EventBus.getDefault().post(RecipeEvent.SUCCESS);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: onPost: " + t.getMessage());
+                EventBus.getDefault().post(RecipeEvent.FAILURE);
             }
         });
     }
 
     private Retrofit getDefaultInstance() {
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-//        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
         return new Retrofit.Builder()
                 .baseUrl(Urls.baseUrl)
-//                .client(client)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

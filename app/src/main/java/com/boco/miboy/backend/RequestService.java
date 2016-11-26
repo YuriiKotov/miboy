@@ -3,6 +3,7 @@ package com.boco.miboy.backend;
 import com.boco.miboy.model.PhotoRequest;
 import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.model.Registration;
+import com.boco.miboy.model.ServerResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -14,13 +15,13 @@ public interface RequestService {
 
     @Headers("Content-Type: application/json")
     @POST(Urls.registration)
-    Call<ResponseBody> registration(@Body Registration registration);
+    Call<ServerResponse> registration(@Body Registration registration);
 
     @Headers("Content-Type: application/json")
     @POST(Urls.questionnaire)
-    Call<ResponseBody> questionnaire(@Body Questionnaire questionnaire);
+    Call<ServerResponse> questionnaire(@Body Questionnaire questionnaire);
 
     @Headers("Content-Type: application/json")
     @POST(Urls.recipes)
-    Call<ResponseBody> post(@Body PhotoRequest message);
+    Call<ServerResponse> post(@Body PhotoRequest message);
 }

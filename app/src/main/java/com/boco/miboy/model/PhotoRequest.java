@@ -1,8 +1,8 @@
 package com.boco.miboy.model;
 
 public class PhotoRequest {
-    private String token;
     private String image;
+    private String token;
 
     public PhotoRequest() {
     }

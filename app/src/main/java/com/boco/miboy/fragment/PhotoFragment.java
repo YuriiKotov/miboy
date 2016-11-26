@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.boco.miboy.R;
@@ -62,20 +61,22 @@ public class PhotoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG, "onActivityResult: ");
+        getMainActivity().progressDialog.dismiss();
         if (resultCode == RESULT_OK) {
-            updatePhoto();
+            sendPhoto();
         } else {
             showToast(R.string.text_error_uploading_img);
         }
     }
 
-    private void updatePhoto() {
-        Log.i(TAG, "updatePhoto: ");
+    private void sendPhoto() {
+        Log.i(TAG, "sendPhoto: ");
         String imagePath = getMainActivity().imagePath;
         if (imagePath != null && !imagePath.isEmpty()) {
             String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             Bitmap bitmap = ImageUtil.decodeSampledBitmap(imagePath, 750, 750);
 
+            getMainActivity().progressDialog.show();
             new ApiCall().photo(userUid, bitmap);
         } else {
             showToast(R.string.text_error_uploading_img);

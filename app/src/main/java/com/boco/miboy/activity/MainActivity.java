@@ -1,5 +1,6 @@
 package com.boco.miboy.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,14 +18,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.boco.miboy.enums.RecipeEvent;
 import com.boco.miboy.enums.Screen;
 import com.boco.miboy.fragment.HistoryFragment;
 import com.boco.miboy.fragment.PhotoFragment;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
+import com.boco.miboy.other.Storage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,12 +50,31 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
     private Screen currentScreen;
     public String imagePath;
     private Fragment currentFragment;
+    public ProgressDialog progressDialog;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RecipeEvent recipeEvent) {
+        progressDialog.dismiss();
+        Log.i(TAG, "onMessageEvent: " + recipeEvent);
+        if (recipeEvent == RecipeEvent.SUCCESS) {
+            Intent intent = new Intent(this, RecipeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,6 +86,10 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
         initDrawer();
         showFragment(Screen.PHOTO);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Wait please...");
+        progressDialog.setCancelable(false);
     }
 
     @Override

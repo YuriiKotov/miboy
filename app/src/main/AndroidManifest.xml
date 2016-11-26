@@ -30,6 +30,9 @@
             android:name=".activity.QueryActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.RecipeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Drawer" />

@@ -2,27 +2,37 @@ package com.boco.miboy.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class ServerResponse {
-    private String data;
+    private List<Recipe> data;
     @SerializedName("error_code")
-    private String errorCode;
+    private int errorCode;
 
     public ServerResponse() {
     }
 
-    public String getData() {
+    public List<Recipe> getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(List<Recipe> data) {
         this.data = data;
     }
 
-    public String getErrorCode() {
+    public int getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
+    public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerResponse{" +
+                "data='" + data + '\'' +
+                ", errorCode='" + errorCode + '\'' +
+                '}';
     }
 }
