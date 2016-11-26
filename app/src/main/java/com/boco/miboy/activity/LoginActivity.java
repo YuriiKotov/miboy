@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.boco.miboy.backend.ApiCall;
 import com.boco.miboy.other.Storage;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,6 +38,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import com.boco.miboy.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,16 +59,46 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseUser user;
 
     @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Boolean registrationSuccess) {
+        progressDialog.dismiss();
+        Log.i(TAG, "onMessageEvent: ");
+        if (registrationSuccess) {
+            Intent intent;
+            if (Storage.getInstance(this).isQueryRequired()) {
+                intent = new Intent(this, QueryActivity.class);
+            } else {
+                intent = new Intent(this, MainActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        } else {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         facebookInit();
         googleInit();
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Sign in...");
+        progressDialog.setCancelable(false);
+
         if (user != null) {
             Log.i(TAG, "onCreate: user uid " + user.getUid());
             Log.i(TAG, "onCreate: user name " + user.getDisplayName());
@@ -76,10 +112,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
             }
         }
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Sign in...");
-        progressDialog.setCancelable(false);
     }
 
     @Override
@@ -122,20 +154,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void facebookLoginProcessing(AccessToken token) {
-        Log.i(TAG, "facebookLoginProcessing: ");
+        Log.i(TAG, "facebookLoginProcessing: " );
         progressDialog.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "facebookLoginProcessing: signInWithCredential", task.getException());
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(LoginActivity.this, "User has account from different social by this email", Toast.LENGTH_SHORT).show();
                                 authSuccessful();
                             } else {
+                                progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -182,9 +214,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         } else {
@@ -220,14 +252,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void authSuccessful() {
-        Intent intent;
-        if (Storage.getInstance(this).isQueryRequired()) {
-            intent = new Intent(this, QueryActivity.class);
-        } else {
-            intent = new Intent(this, MainActivity.class);
-        }
-        startActivity(intent);
-        finish();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, "authSuccessful: userUid = " + userUid);
+        new ApiCall().registration(userUid);
     }
 
     public boolean isNetworkConnected(Context context) {

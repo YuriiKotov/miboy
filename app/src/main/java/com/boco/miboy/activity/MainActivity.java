@@ -34,12 +34,6 @@ import java.io.ByteArrayOutputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -55,33 +49,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @OnClick(R.id.post)
     public void onPost(View view) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Urls.baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RequestService service = retrofit.create(RequestService.class);
-
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.img_20161122_164420);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
-
-        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Message message = new Message("lvncksnvsv", "img_20161122_164420.jpg", encodedImage);
-        Call<ResponseBody> call = service.post(message);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e(TAG, "onResponse: onPost: ");
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                showSnackBar(getString(R.string.text_server_connection_error));
-                Log.e(TAG, "onFailure: onPost: " + t.getMessage());
-            }
-        });
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(Urls.baseUrl)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        RequestService service = retrofit.create(RequestService.class);
+//
+//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.img_20161122_164420);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        bm.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
+//        byte[] b = baos.toByteArray();
+//
+//        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+//
+//        Message message = new Message("lvncksnvsv", "img_20161122_164420.jpg", encodedImage);
+//        Call<ResponseBody> call = service.post(message);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Log.e(TAG, "onResponse: onPost: ");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                showSnackBar(getString(R.string.text_server_connection_error));
+//                Log.e(TAG, "onFailure: onPost: " + t.getMessage());
+//            }
+//        });
     }
 
     @Override
