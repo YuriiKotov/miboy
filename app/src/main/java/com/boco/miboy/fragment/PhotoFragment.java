@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.boco.miboy.R;
-import com.boco.miboy.activity.MainActivity;
 import com.boco.miboy.backend.ApiCall;
 import com.boco.miboy.other.Const;
 import com.boco.miboy.other.ImageUtil;

@@ -18,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.boco.miboy.R;
 import com.boco.miboy.enums.RecipeEvent;
 import com.boco.miboy.enums.Screen;
 import com.boco.miboy.fragment.HistoryFragment;
 import com.boco.miboy.fragment.PhotoFragment;
 import com.boco.miboy.model.History;
 import com.boco.miboy.other.CircleTransform;
-import com.boco.miboy.R;
 import com.boco.miboy.other.Const;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

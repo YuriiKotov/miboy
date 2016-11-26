@@ -5,7 +5,6 @@ import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.model.Registration;
 import com.boco.miboy.model.ServerResponse;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;

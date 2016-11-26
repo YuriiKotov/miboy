@@ -15,11 +15,10 @@ import android.view.View;
 
 import com.boco.miboy.R;
 import com.boco.miboy.backend.ApiCall;
-import com.boco.miboy.enums.AuthEvent;
 import com.boco.miboy.enums.QueryEvent;
-import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.fragment.QueryFragment;
 import com.boco.miboy.model.Question;
+import com.boco.miboy.model.Questionnaire;
 import com.boco.miboy.other.AssetUtil;
 import com.boco.miboy.other.Storage;
 import com.google.firebase.auth.FirebaseAuth;

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.google.firebase.crash.FirebaseCrash;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public final class Storage {

@@ -4,14 +4,13 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 
+import com.boco.miboy.enums.AuthEvent;
 import com.boco.miboy.enums.QueryEvent;
 import com.boco.miboy.enums.RecipeEvent;
 import com.boco.miboy.model.History;
 import com.boco.miboy.model.PhotoRequest;
 import com.boco.miboy.model.Questionnaire;
-import com.boco.miboy.model.Recipe;
 import com.boco.miboy.model.Registration;
-import com.boco.miboy.enums.AuthEvent;
 import com.boco.miboy.model.ServerResponse;
 import com.google.gson.Gson;
 
@@ -21,9 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
