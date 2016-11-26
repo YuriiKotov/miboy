@@ -6,9 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.boco.miboy.R;
@@ -69,6 +71,13 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
         toolbar.setTitle(R.string.toolbar_query);
         setSupportActionBar(toolbar);
+        if (!Storage.getInstance(this).isQueryRequired()) {
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowTitleEnabled(true);
+            }
+        }
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Wait please...");
@@ -87,9 +96,8 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
     public List<Question> getImagesForQuery() {
         List<Question> questions = new ArrayList<>();
-        AssetUtil assetUtil = new AssetUtil(this);
         String question = "Choose what you like";
-        Map<Integer, List<Drawable>> questionMap = assetUtil.getQuestions();
+        Map<Integer, List<Drawable>> questionMap = AssetUtil.getInstance().getQuestions(this);
         for (Integer position : questionMap.keySet()) {
             List<Drawable> drawables = questionMap.get(position);
             questions.add(new Question(position, question, drawables));
@@ -120,5 +128,18 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
         questionNumber++;
         showQuestion();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

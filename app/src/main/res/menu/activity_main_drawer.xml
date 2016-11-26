@@ -9,6 +9,11 @@
             android:title="History" />
     </group>
 
+    <item
+        android:id="@+id/nav_query"
+        android:icon="@drawable/ic_exit"
+        android:title="Questionnaire" />
+
     <group android:id="@+id/group_logout">
         <item
             android:id="@+id/nav_sign_out"

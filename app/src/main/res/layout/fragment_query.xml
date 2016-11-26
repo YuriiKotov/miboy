@@ -27,5 +27,5 @@
         android:layout_margin="30dp"
         android:text="1/7"
         android:textColor="@color/secondary_text"
-        android:textSize="28sp" />
+        android:textSize="24sp" />
 </LinearLayout>

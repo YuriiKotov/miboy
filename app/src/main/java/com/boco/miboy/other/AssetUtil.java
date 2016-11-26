@@ -19,54 +19,54 @@ import java.util.TreeMap;
 
 public class AssetUtil {
     private static final String TAG = AssetUtil.class.getSimpleName();
-    private Context context;
+    private static AssetUtil instance;
     private static final String QUESTIONS_PATH = "questions";
-    private static final int QUESTION_1 = 1;
-    private static final int QUESTION_2 = 2;
-    private static final int QUESTION_3 = 3;
-    private static final int QUESTION_4 = 4;
-    private static final int QUESTION_5 = 5;
-    private static final int QUESTION_6 = 6;
-    private static final int QUESTION_7 = 7;
     private static final int[] QUESTION_FOLDERS = new int[]{
-            QUESTION_1,
-            QUESTION_2,
-            QUESTION_3,
-            QUESTION_4,
-            QUESTION_5,
-            QUESTION_6,
-            QUESTION_7
+            1, 2, 3, 4, 5, 6, 7
     };
+    private Map<Integer, List<Drawable>> imageMap;
 
-    public AssetUtil(Context context) {
-        this.context = context;
+    private AssetUtil() {
     }
 
-    public Map<Integer, List<Drawable>> getQuestions() {
-        Map<Integer, List<Drawable>> smsMap = new TreeMap<>();
-        try {
-            for (int folderName : QUESTION_FOLDERS) {
-                String pathToQuestion = QUESTIONS_PATH + "/" + folderName;
-                List<String> names = listNames(pathToQuestion);
-                List<Drawable> drawables = new ArrayList<>();
-                for (int j = 0; j < names.size(); j++) {
-                    String image = names.get(j);
-//                    Log.i(TAG, "getQuestions: pos = " + folderName + " name " + image);
-                    InputStream is = context.getResources().getAssets().open(pathToQuestion + "/" + image);
-                    Drawable drawable = Drawable.createFromStream(is, null);
-                    drawables.add(drawable);
-                    is.close();
-                }
-                smsMap.put(folderName, drawables);
-            }
-        } catch (Exception e) {
-            System.out.println("getQuestions() " + e);
-            Log.e(TAG, "getQuestions: ", e);
+    public static AssetUtil getInstance() {
+        if (instance == null) {
+            instance = new AssetUtil();
+
         }
-        return smsMap;
+        return instance;
     }
 
-    private List<String> listNames(String path) {
+    public Map<Integer, List<Drawable>> getQuestions(Context context) {
+        Map<Integer, List<Drawable>> images = new TreeMap<>();
+        if (imageMap == null) {
+            try {
+                for (int folderName : QUESTION_FOLDERS) {
+                    String pathToQuestion = QUESTIONS_PATH + "/" + folderName;
+                    List<String> names = listNames(pathToQuestion, context);
+                    List<Drawable> drawables = new ArrayList<>();
+                    for (int j = 0; j < names.size(); j++) {
+                        String image = names.get(j);
+//                    Log.i(TAG, "getQuestions: pos = " + folderName + " name " + image);
+                        InputStream is = context.getResources().getAssets().open(pathToQuestion + "/" + image);
+                        Drawable drawable = Drawable.createFromStream(is, null);
+                        drawables.add(drawable);
+                        is.close();
+                    }
+                    images.put(folderName, drawables);
+                }
+                imageMap = images;
+            } catch (Exception e) {
+                System.out.println("getQuestions() " + e);
+                Log.e(TAG, "getQuestions: ", e);
+            }
+        } else {
+            return imageMap;
+        }
+        return images;
+    }
+
+    private List<String> listNames(String path, Context context) {
         List<String> paths = new ArrayList<>();
         try {
             Resources res = context.getResources();
