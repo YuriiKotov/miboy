@@ -1,8 +1,11 @@
 package com.boco.miboy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
     private int time;
     private String title;
     private String instruction;
@@ -78,4 +81,38 @@ public class Recipe {
                 ", \"buy\"=" + buy +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(time);
+        parcel.writeString(title);
+        parcel.writeString(instruction);
+        parcel.writeString(image);
+        parcel.writeStringList(buy);
+    }
+
+    protected Recipe(Parcel in) {
+        time = in.readInt();
+        title = in.readString();
+        instruction = in.readString();
+        image = in.readString();
+        buy = in.createStringArrayList();
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

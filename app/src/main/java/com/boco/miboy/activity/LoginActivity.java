@@ -70,15 +70,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         progressDialog.dismiss();
         Log.i(TAG, "onMessageEvent: " + authEvent);
         if (authEvent == AuthEvent.SUCCESS) {
-            Intent intent;
-            if (Storage.getInstance(this).isQueryRequired()) {
-                intent = new Intent(this, QueryActivity.class);
-            } else {
-                intent = new Intent(this, MainActivity.class);
-            }
-            startActivity(intent);
-            finish();
+            authSuccess();
         }
+    }
+
+    private void authSuccess() {
+        Intent intent;
+        if (Storage.getInstance(this).isQueryRequired()) {
+            intent = new Intent(this, QueryActivity.class);
+        } else {
+            intent = new Intent(this, MainActivity.class);
+        }
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -103,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.i(TAG, "onCreate: user name " + user.getDisplayName());
             Log.i(TAG, "onCreate: user email " + user.getEmail());
             Log.i(TAG, "onCreate: user photo " + user.getPhotoUrl());
-            authSuccessful();
+            authSuccess();
         } else {
             Log.e(TAG, "onCreate: not authorized");
             LoginManager.getInstance().logOut(); //Facebook
@@ -173,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             }
                         } else {
                             Log.d(TAG, "signInWithCredential: onComplete:" + task.isSuccessful());
-                            authSuccessful();
+                            registerUser();
                         }
                     }
                 });
@@ -220,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         } else {
-                            authSuccessful();
+                            registerUser();
                         }
                     }
                 });
@@ -251,9 +255,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    private void authSuccessful() {
+    private void registerUser() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.i(TAG, "authSuccessful: userUid = " + userUid);
+        Log.i(TAG, "registerUser: userUid = " + userUid);
         new ApiCall().registration(userUid);
     }
 

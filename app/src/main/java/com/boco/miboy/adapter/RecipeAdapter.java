@@ -1,6 +1,7 @@
 package com.boco.miboy.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boco.miboy.R;
+import com.boco.miboy.activity.RecipeActivity;
 import com.boco.miboy.backend.Urls;
 import com.boco.miboy.model.Recipe;
 import com.boco.miboy.other.CircleTransform;
+import com.boco.miboy.other.Const;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,6 +25,17 @@ import butterknife.ButterKnife;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
     private final Context context;
     private List<Recipe> recipes;
+    private View.OnClickListener onHistoryClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int pos = (int) view.getTag();
+            Recipe recipe = recipes.get(pos);
+
+            Intent intent = new Intent(context, RecipeActivity.class);
+            intent.putExtra(Const.RECIPE_EXTRA, recipe);
+            context.startActivity(intent);
+        }
+    };
 
     public RecipeAdapter(Context context, List<Recipe> recipes) {
         this.context = context;
@@ -42,6 +56,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 .load(Urls.imageUrl + recipe.getImage())
                 .transform(new CircleTransform())
                 .into(holder.photo);
+
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(onHistoryClick);
     }
 
     @Override

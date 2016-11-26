@@ -1,6 +1,5 @@
 package com.boco.miboy.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boco.miboy.R;
-import com.boco.miboy.activity.RecipeActivity;
+import com.boco.miboy.activity.ListActivity;
 import com.boco.miboy.model.History;
 import com.boco.miboy.other.Const;
 import com.boco.miboy.other.TextUtil;
@@ -24,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
-    private final Activity activity;
+    private final Context context;
     private List<History> histories;
     private View.OnClickListener onHistoryClick = new View.OnClickListener() {
         @Override
@@ -32,15 +31,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             int pos = (int) view.getTag();
             History history = histories.get(pos);
 
-            Intent intent = new Intent(activity, RecipeActivity.class);
+            Intent intent = new Intent(context, ListActivity.class);
             intent.putExtra(Const.HISTORY_ID_EXTRA, history.getTimestamp());
-            activity.startActivity(intent);
-            activity.finish();
+            context.startActivity(intent);
         }
     };
 
-    public HistoryAdapter(Activity activity, List<History> histories) {
-        this.activity = activity;
+    public HistoryAdapter(Context context, List<History> histories) {
+        this.context = context;
         this.histories = histories;
     }
 

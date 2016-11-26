@@ -26,7 +26,6 @@ import com.boco.miboy.model.History;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
 import com.boco.miboy.other.Const;
-import com.boco.miboy.other.Storage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -66,7 +65,7 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         if (recipeEvent == RecipeEvent.SUCCESS) {
             List<History> historyList = realm.where(History.class).findAllSorted("timestamp", Sort.DESCENDING);
             if (!historyList.isEmpty()) {
-                Intent intent = new Intent(this, RecipeActivity.class);
+                Intent intent = new Intent(this, ListActivity.class);
                 intent.putExtra(Const.HISTORY_ID_EXTRA, historyList.get(0).getTimestamp());
                 startActivity(intent);
                 finish();
@@ -89,16 +88,17 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
         EventBus.getDefault().register(this);
         realm = Realm.getDefaultInstance();
 
-        setSupportActionBar(toolbar);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
         initDrawer();
         showFragment(Screen.PHOTO);
+
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Wait please...");
@@ -122,7 +122,7 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
             switch (screen) {
                 case PHOTO:
                     currentFragment = new PhotoFragment();
-                    toolbar.setTitle(R.string.app_name);
+                    toolbar.setTitle("Photo");
                     break;
                 case HISTORY:
                     currentFragment = new HistoryFragment();
