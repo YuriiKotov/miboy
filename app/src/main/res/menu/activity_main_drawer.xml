@@ -4,6 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:checked="true"
+            android:id="@+id/nav_photo"
+            android:icon="@drawable/ic_camera"
+            android:title="Photo" />
+        <item
+            android:checked="true"
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history"
             android:title="History" />

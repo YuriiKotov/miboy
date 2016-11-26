@@ -131,11 +131,24 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    public void onBackPressed() {
+        if (Storage.getInstance(this).isQueryRequired()) {
+            super.onBackPressed();
+        } else {
+            startMain();
+        }
+    }
+
+    private void startMain() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                startMain();
                 break;
             default:
                 break;
