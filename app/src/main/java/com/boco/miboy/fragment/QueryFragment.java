@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.boco.miboy.R;
 import com.boco.miboy.adapter.QueryAdapter;
@@ -24,6 +25,8 @@ public class QueryFragment extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.next_btn)
     Button nextBtn;
+    @BindView(R.id.question)
+    TextView questionView;
     private Question question;
     private QueryAdapter queryAdapter;
 
@@ -48,8 +51,9 @@ public class QueryFragment extends Fragment {
 
         Log.i(TAG, "onActivityCreated: ");
         nextBtn.setOnClickListener((View.OnClickListener) getActivity());
+        questionView.setText(question.getQuestion());
 
-        queryAdapter = new QueryAdapter();
+        queryAdapter = new QueryAdapter(question.getImages());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(queryAdapter);
     }

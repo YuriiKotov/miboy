@@ -19,4 +19,11 @@
         <item name="actionMenuTextColor">@color/icons</item>
         <item name="android:itemBackground">@color/primary</item>
     </style>
+
+    <style name="MiboyButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
 </resources>

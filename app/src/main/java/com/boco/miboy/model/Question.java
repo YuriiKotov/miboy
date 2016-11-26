@@ -1,14 +1,27 @@
 package com.boco.miboy.model;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+import java.util.List;
 
 public class Question {
+    private int number;
     private String question;
-    private Bitmap [] images;
+    private List<Drawable> images;
 
-    public Question(String question, Bitmap[] images) {
+    public Question(int number, String question, List<Drawable> images) {
+        this.number = number;
         this.question = question;
         this.images = images;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getQuestion() {
@@ -19,11 +32,11 @@ public class Question {
         this.question = question;
     }
 
-    public Bitmap[] getImages() {
+    public List<Drawable> getImages() {
         return images;
     }
 
-    public void setImages(Bitmap[] images) {
+    public void setImages(List<Drawable> images) {
         this.images = images;
     }
 }

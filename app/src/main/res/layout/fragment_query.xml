@@ -4,17 +4,17 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:layout_margin="20dp"
+            android:textColor="@color/primary_text"
             android:id="@+id/question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Query question number bla-bla??"
             android:textSize="32sp" />
 
         <android.support.v7.widget.RecyclerView
@@ -24,8 +24,9 @@
     </LinearLayout>
 
     <Button
+        style="@style/MiboyButton"
         android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
+        android:layout_margin="40dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/next_btn"
         android:text="Next"

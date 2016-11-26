@@ -1,5 +1,6 @@
 package com.boco.miboy.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,16 @@ import android.widget.ImageView;
 
 import com.boco.miboy.R;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
+    private List<Drawable> images;
 
-    public QueryAdapter() {
+    public QueryAdapter(List<Drawable> images) {
+        this.images = images;
     }
 
     @Override
@@ -23,12 +28,13 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(QueryAdapter.ViewHolder holder, int position) {
-
+        Drawable drawable = images.get(position);
+        holder.photo.setImageDrawable(drawable);
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return images.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
