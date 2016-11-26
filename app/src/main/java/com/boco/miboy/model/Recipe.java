@@ -3,20 +3,21 @@ package com.boco.miboy.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe implements Parcelable {
     private int time;
     private String title;
-    private String instruction;
+    private String instructions;
     private String image;
-    private List<List<String>> ingredients;
+    private List<Ingredient> ingredients;
     private List<String> buy;
 
-    public Recipe(int time, String title, String instruction, String image, List<List<String>> ingredients, List<String> buy) {
+    public Recipe(int time, String title, String instructions, String image, List<Ingredient> ingredients, List<String> buy) {
         this.time = time;
         this.title = title;
-        this.instruction = instruction;
+        this.instructions = instructions;
         this.image = image;
         this.ingredients = ingredients;
         this.buy = buy;
@@ -38,12 +39,12 @@ public class Recipe implements Parcelable {
         this.title = title;
     }
 
-    public String getInstruction() {
-        return instruction;
+    public String getInstructions() {
+        return instructions;
     }
 
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 
     public String getImage() {
@@ -54,11 +55,11 @@ public class Recipe implements Parcelable {
         this.image = image;
     }
 
-    public List<List<String>> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<List<String>> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -70,12 +71,13 @@ public class Recipe implements Parcelable {
         this.buy = buy;
     }
 
+
     @Override
     public String toString() {
         return "{" +
                 "\"time\"=" + time +
                 ", \"title\"='" + title + '\'' +
-                ", \"instruction\"='" + instruction + '\'' +
+                ", \"instructions\"='" + instructions + '\'' +
                 ", \"image\"='" + image + '\'' +
                 ", \"ingredients\"=" + ingredients +
                 ", \"buy\"=" + buy +
@@ -91,17 +93,20 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(time);
         parcel.writeString(title);
-        parcel.writeString(instruction);
+        parcel.writeString(instructions);
         parcel.writeString(image);
         parcel.writeStringList(buy);
+        parcel.writeTypedList(ingredients);
     }
 
     protected Recipe(Parcel in) {
         time = in.readInt();
         title = in.readString();
-        instruction = in.readString();
+        instructions = in.readString();
         image = in.readString();
         buy = in.createStringArrayList();
+        ingredients = new ArrayList<>();
+        in.readTypedList(ingredients, Ingredient.CREATOR);
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {

@@ -2,8 +2,8 @@
 <resources>
     <color name="white">#ffffff</color>
 
-    <color name="primary">#F16226</color>
-    <color name="primary_dark">#F16226</color>
+    <color name="primary">#FF5722</color>
+    <color name="primary_dark">#FF5722</color>
     <color name="primary_light">@color/white</color>
     <!--<color name="primary">#FFEB3B</color>-->
     <!--<color name="primary_dark">#FBC02D</color>-->
