@@ -54,7 +54,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         holder.photo.setImageDrawable(drawable);
 
         if (checkedItem == position) {
-            holder.parent.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+            holder.parent.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
         } else {
             holder.parent.setBackgroundColor(ContextCompat.getColor(context, R.color.primary_light));
         }

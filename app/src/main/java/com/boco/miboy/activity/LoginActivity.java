@@ -164,7 +164,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w(TAG, "facebookLoginProcessing: signInWithCredential", task.getException());
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Toast.makeText(LoginActivity.this, "User has account from different social by this email", Toast.LENGTH_SHORT).show();
-                                authSuccessful();
+                                EventBus.getDefault().post(AuthEvent.FAILURE);
+                                LoginManager.getInstance().logOut();
                             } else {
                                 progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",

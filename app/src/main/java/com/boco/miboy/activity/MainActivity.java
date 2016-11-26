@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.boco.miboy.enums.Screen;
+import com.boco.miboy.fragment.HistoryFragment;
+import com.boco.miboy.fragment.PhotoFragment;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -38,37 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser user;
     @BindView(R.id.container)
     RelativeLayout container;
-
-    @OnClick(R.id.post)
-    public void onPost(View view) {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(Urls.baseUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        RequestService service = retrofit.create(RequestService.class);
-//
-//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.img_20161122_164420);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bm.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
-//        byte[] b = baos.toByteArray();
-//
-//        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-//
-//        Message message = new Message("lvncksnvsv", "img_20161122_164420.jpg", encodedImage);
-//        Call<ResponseBody> call = service.post(message);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                Log.e(TAG, "onResponse: onPost: ");
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                showSnackBar(getString(R.string.text_server_connection_error));
-//                Log.e(TAG, "onFailure: onPost: " + t.getMessage());
-//            }
-//        });
-    }
+    private Screen currentScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +59,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
         initDrawer();
+        showFragment(Screen.PHOTO);
+    }
+
+    public void showFragment(Screen screen) {
+        Log.i(TAG, "showFragment: " + screen);
+        if (currentScreen != screen) {
+            currentScreen = screen;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment fragment = new PhotoFragment();
+            switch (screen) {
+                case PHOTO:
+                    fragment = new PhotoFragment();
+                    toolbar.setTitle(R.string.app_name);
+                    break;
+                case HISTORY:
+                    fragment = new HistoryFragment();
+                    toolbar.setTitle("History");
+                    break;
+            }
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_history:
+                break;
+            case R.id.nav_sign_out:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                break;
+            default:
+                break;
+        }
+        drawer.closeDrawers();
+        return true;
+    }
+
+    private void showSnackBar(String text) {
+        Snackbar.make(container, text, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initDrawer() {
@@ -130,29 +149,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_history:
-                break;
-            case R.id.nav_sign_out:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                break;
-            default:
-                break;
-        }
-        drawer.closeDrawers();
-        return true;
-    }
-
-    private void showSnackBar(String text) {
-        Snackbar.make(container, text, Snackbar.LENGTH_SHORT).show();
     }
 }

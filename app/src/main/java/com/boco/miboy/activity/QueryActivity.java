@@ -88,10 +88,11 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
     public List<Question> getImagesForQuery() {
         List<Question> questions = new ArrayList<>();
         AssetUtil assetUtil = new AssetUtil(this);
+        String question = "Choose what you like";
         Map<Integer, List<Drawable>> questionMap = assetUtil.getQuestions();
         for (Integer position : questionMap.keySet()) {
             List<Drawable> drawables = questionMap.get(position);
-            questions.add(new Question(position, "Question number " + position + "?", drawables));
+            questions.add(new Question(position, question, drawables));
         }
         return questions;
     }

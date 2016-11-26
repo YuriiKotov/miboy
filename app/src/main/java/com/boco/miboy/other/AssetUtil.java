@@ -25,11 +25,17 @@ public class AssetUtil {
     private static final int QUESTION_2 = 2;
     private static final int QUESTION_3 = 3;
     private static final int QUESTION_4 = 4;
+    private static final int QUESTION_5 = 5;
+    private static final int QUESTION_6 = 6;
+    private static final int QUESTION_7 = 7;
     private static final int[] QUESTION_FOLDERS = new int[]{
             QUESTION_1,
             QUESTION_2,
             QUESTION_3,
-            QUESTION_4
+            QUESTION_4,
+            QUESTION_5,
+            QUESTION_6,
+            QUESTION_7
     };
 
     public AssetUtil(Context context) {
