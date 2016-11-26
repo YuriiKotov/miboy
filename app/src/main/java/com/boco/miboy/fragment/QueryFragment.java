@@ -51,9 +51,10 @@ public class QueryFragment extends Fragment {
 
         Log.i(TAG, "onActivityCreated: ");
         nextBtn.setOnClickListener((View.OnClickListener) getActivity());
+        nextBtn.setEnabled(false);
         questionView.setText(question.getQuestion());
 
-        queryAdapter = new QueryAdapter(question.getImages());
+        queryAdapter = new QueryAdapter(getContext(), question.getImages(), nextBtn);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(queryAdapter);
     }

@@ -19,14 +19,16 @@ import com.boco.miboy.other.Storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class QueryActivity extends AppCompatActivity implements View.OnClickListener{
+public class QueryActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = QueryActivity.class.getSimpleName();
     private int questionNumber;
     private List<QueryFragment> queries;
+    private Map<Integer, Integer> answers;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -39,6 +41,7 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
         toolbar.setTitle(R.string.toolbar_query);
         setSupportActionBar(toolbar);
 
+        answers = new TreeMap<>();
         List<Question> questions = getImagesForQuery();
 
         queries = new ArrayList<>();
@@ -67,7 +70,6 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
             QueryFragment fragment = queries.get(questionNumber);
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss();
-            questionNumber++;
         } else {
             //TODO: send answer to backend
             Log.i(TAG, "showQuestion: Query done");
@@ -79,6 +81,11 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        //TODO: save answers
+        int selectedImgPos = (int) view.getTag();
+        answers.put(questionNumber + 1, selectedImgPos);
+
+        questionNumber++;
         showQuestion();
     }
 }
