@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.boco.miboy.R;
 import com.boco.miboy.activity.RecipeActivity;
 import com.boco.miboy.backend.Urls;
+import com.boco.miboy.model.Ingredient;
 import com.boco.miboy.model.Recipe;
 import com.boco.miboy.other.CircleTransform;
 import com.boco.miboy.other.Const;
@@ -50,8 +51,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Recipe recipe = recipes.get(position);
+        List<Ingredient> ingredients = recipe.getIngredients();
+
+        int availableCount = 0;
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (ingredients.get(i).getValue() == 1) {
+                availableCount++;
+            }
+        }
+
+        String time = recipe.getTime() + " min";
+//        String match = availableCount + "/" + ingredients.size();
+        String match = ingredients.size() + "";
 
         holder.title.setText(recipe.getTitle());
+        holder.time.setText(time);
+        holder.match.setText(match);
         Picasso.with(context)
                 .load(Urls.imageUrl + recipe.getImage())
                 .placeholder(R.drawable.ic_miboy_vr2_app)
@@ -72,9 +87,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         TextView title;
         @BindView(R.id.photo)
         ImageView photo;
-        @BindView(R.id.match_view)
+        @BindView(R.id.ingredient_count)
         TextView match;
-
+        @BindView(R.id.time)
+        TextView time;
 
         ViewHolder(View itemView) {
             super(itemView);

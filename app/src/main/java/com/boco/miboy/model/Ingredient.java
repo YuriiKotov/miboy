@@ -55,4 +55,12 @@ public class Ingredient implements Parcelable {
         parcel.writeString(key);
         parcel.writeInt(value);
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "key='" + key + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

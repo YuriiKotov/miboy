@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.boco.miboy.R;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 
 public class ListActivity extends AppCompatActivity {
+    private static final String TAG = ListActivity.class.getSimpleName();
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
@@ -62,6 +64,9 @@ public class ListActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         ServerResponse serverResponse = gson.fromJson(history.getJson(), ServerResponse.class);
+        for (int i = 0; i < serverResponse.getData().size(); i++) {
+            Log.i(TAG, "onCreate: " + i +" recipe = " + serverResponse.getData().get(i).toString());
+        }
         RecipeAdapter recipeAdapter = new RecipeAdapter(this, serverResponse.getData());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recipeAdapter);
