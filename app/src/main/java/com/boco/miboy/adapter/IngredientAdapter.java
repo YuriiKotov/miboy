@@ -1,6 +1,8 @@
 package com.boco.miboy.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boco.miboy.R;
@@ -67,10 +70,43 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         @BindView(R.id.buy_btn)
         Button buy;
 
+        private View.OnClickListener onWalletListener1 = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.tesco.com/"));
+                context.startActivity(browserIntent);
+            }
+        };
+
+        private View.OnClickListener onWalletListener2 = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.walmart.com"));
+                context.startActivity(browserIntent);
+            }
+        };
+
+        private View.OnClickListener onWalletListener3 = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.auchan.ua/"));
+                context.startActivity(browserIntent);
+            }
+        };
+
         @OnClick(R.id.buy_btn)
         public void onBuyClick(View v) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.dialog_buy, null);
+
+            ImageView wallet1 = (ImageView) view.findViewById(R.id.wallet_1);
+            ImageView wallet2 = (ImageView) view.findViewById(R.id.wallet_2);
+            ImageView wallet3 = (ImageView) view.findViewById(R.id.wallet_3);
+
+            wallet1.setOnClickListener(onWalletListener1);
+            wallet2.setOnClickListener(onWalletListener2);
+            wallet3.setOnClickListener(onWalletListener3);
+
             AlertDialog dialog = new AlertDialog.Builder(context)
                     .setTitle("Buy product")
                     .setView(view)
