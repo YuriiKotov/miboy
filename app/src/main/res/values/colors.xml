@@ -4,7 +4,7 @@
 
     <color name="primary">#FF5722</color>
     <color name="primary_dark">#FF5722</color>
-    <color name="primary_light">@color/white</color>
+    <color name="primary_light">#ececec</color>
     <!--<color name="primary">#FFEB3B</color>-->
     <!--<color name="primary_dark">#FBC02D</color>-->
     <!--<color name="primary_light">#FFF9C4</color>-->

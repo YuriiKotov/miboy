@@ -2,17 +2,19 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@color/primary"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <LinearLayout
-        android:padding="5dp"
         android:id="@+id/parent"
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/photo"
@@ -21,11 +23,11 @@
             android:scaleType="centerCrop" />
 
         <TextView
-            android:layout_marginLeft="20dp"
             android:id="@+id/title"
-            android:textColor="@color/primary_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/primary_text" />
 
         <TextView
             android:id="@+id/match_view"
