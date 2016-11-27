@@ -101,19 +101,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         progressDialog.setMessage("Sign in...");
         progressDialog.setCancelable(false);
 
-        if (user != null) {
-            Log.i(TAG, "onCreate: user uid " + user.getUid());
-            Log.i(TAG, "onCreate: user name " + user.getDisplayName());
-            Log.i(TAG, "onCreate: user email " + user.getEmail());
-            Log.i(TAG, "onCreate: user photo " + user.getPhotoUrl());
+        //TODO: fix when Masha come
+//        if (user != null) {
+//            Log.i(TAG, "onCreate: user uid " + user.getUid());
+//            Log.i(TAG, "onCreate: user name " + user.getDisplayName());
+//            Log.i(TAG, "onCreate: user email " + user.getEmail());
+//            Log.i(TAG, "onCreate: user photo " + user.getPhotoUrl());
             authSuccess();
-        } else {
-            Log.e(TAG, "onCreate: not authorized");
-            LoginManager.getInstance().logOut(); //Facebook
-            if (mGoogleApiClient.isConnected()) {//Google
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-            }
-        }
+//        } else {
+//            Log.e(TAG, "onCreate: not authorized");
+//            LoginManager.getInstance().logOut(); //Facebook
+//            if (mGoogleApiClient.isConnected()) {//Google
+//                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+//            }
+//        }
     }
 
     @Override

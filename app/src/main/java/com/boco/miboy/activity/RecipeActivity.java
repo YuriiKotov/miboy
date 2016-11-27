@@ -52,6 +52,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(Urls.imageUrl + recipe.getImage())
+                .placeholder(R.drawable.ic_miboy_vr1_app)
                 .into(image);
 
         Log.i(TAG, "onCreate: " + recipe.toString());

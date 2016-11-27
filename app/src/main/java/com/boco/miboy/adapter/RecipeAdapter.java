@@ -54,6 +54,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         holder.title.setText(recipe.getTitle());
         Picasso.with(context)
                 .load(Urls.imageUrl + recipe.getImage())
+                .placeholder(R.drawable.ic_miboy_vr2_app)
                 .transform(new CircleTransform())
                 .into(holder.photo);
 
