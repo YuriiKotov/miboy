@@ -11,6 +11,7 @@ public class Recipe implements Parcelable {
     private String title;
     private String instructions;
     private String image;
+    private String video;
     private List<Ingredient> ingredients;
     private List<String> buy;
 
@@ -55,6 +56,14 @@ public class Recipe implements Parcelable {
         this.image = image;
     }
 
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -95,6 +104,7 @@ public class Recipe implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(instructions);
         parcel.writeString(image);
+        parcel.writeString(video);
         parcel.writeStringList(buy);
         parcel.writeTypedList(ingredients);
     }
@@ -104,6 +114,7 @@ public class Recipe implements Parcelable {
         title = in.readString();
         instructions = in.readString();
         image = in.readString();
+        video = in.readString();
         buy = in.createStringArrayList();
         ingredients = new ArrayList<>();
         in.readTypedList(ingredients, Ingredient.CREATOR);

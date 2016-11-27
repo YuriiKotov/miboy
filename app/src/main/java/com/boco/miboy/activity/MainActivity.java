@@ -68,7 +68,6 @@ public class MainActivity extends PermissionActivity implements NavigationView.O
                 Intent intent = new Intent(this, ListActivity.class);
                 intent.putExtra(Const.HISTORY_ID_EXTRA, historyList.get(0).getTimestamp());
                 startActivity(intent);
-                finish();
             }
         }
     }
