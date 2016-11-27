@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,10 @@ import android.widget.TextView;
 import com.boco.miboy.R;
 import com.boco.miboy.activity.ListActivity;
 import com.boco.miboy.model.History;
+import com.boco.miboy.model.ServerResponse;
 import com.boco.miboy.other.Const;
 import com.boco.miboy.other.TextUtil;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -23,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+    private static final String TAG = HistoryAdapter.class.getSimpleName();
     private final Context context;
     private List<History> histories;
     private View.OnClickListener onHistoryClick = new View.OnClickListener() {
@@ -53,6 +58,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(history.getPhoto(), 0, history.getPhoto().length);
 
+        Log.i(TAG, "onBindViewHolder: pos = " + position + " " + bitmap.getWidth() + "/" + bitmap.getHeight());
+
         holder.photo.setImageBitmap(bitmap);
         holder.time.setText(TextUtil.getTime(history.getTimestamp()));
 
@@ -70,7 +77,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         TextView time;
         @BindView(R.id.photo)
         ImageView photo;
-
 
         ViewHolder(View itemView) {
             super(itemView);

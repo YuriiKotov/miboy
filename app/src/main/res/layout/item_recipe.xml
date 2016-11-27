@@ -15,6 +15,7 @@
         android:padding="4dp">
 
         <ImageView
+            android:layout_marginLeft="10dp"
             android:id="@+id/photo"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -39,7 +40,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/ic_time" />
+                android:src="@drawable/ic_timer" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="68dp"
+            android:layout_marginLeft="86dp"
             android:lines="1"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />

@@ -2,6 +2,7 @@ package com.boco.miboy.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class HistoryFragment extends BaseFragment {
 
         List<History> histories = getMainActivity().realm.where(History.class).findAllSorted("timestamp", Sort.DESCENDING);
         HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), histories);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(historyAdapter);
     }
 }
