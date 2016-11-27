@@ -30,7 +30,7 @@ import static android.app.Activity.RESULT_OK;
 public class PhotoFragment extends BaseFragment {
     private static final String TAG = PhotoFragment.class.getSimpleName();
 
-    @OnClick(R.id.photo_bt)
+    @OnClick({R.id.photo_bt, R.id.camera_image})
     public void onPhotoClick(View view) {
         if (getMainActivity().hasCameraPermissions()) {
             makePhoto();

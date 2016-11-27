@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:text="Photo"
-        style="@style/MiboyButton"
-        android:id="@+id/photo_bt"
+    <ImageView
+        android:id="@+id/camera_image"
+        android:src="@drawable/ic_photo_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -18,6 +17,12 @@
         android:textSize="14sp"
         android:layout_margin="10dp"
         android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="Photo"
+        style="@style/MiboyButton"
+        android:id="@+id/photo_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
